@@ -134,10 +134,31 @@ namespace MauiApp1
 
         }
 
-        //Assign to Team 4 Member
-        private void ButtonResetSeatingChart(object sender, EventArgs e)
+        //Josh
+        private async void ButtonResetSeatingChart(object sender, EventArgs e)
         {
+            
+            //this part is just for the popup. it returns a bool value
+            
+            var confirmation = await DisplayAlert("Reset seating chart?", "This action cannot be undone.", "Yes", "No");
+            
+            //if the popup returns yes it just loops thru the seats and sets Reserved to false
+            if (confirmation == true)
+            {
+                for (int i = 0; i < seatingChart.GetLength(0); i++)
+                {
+                    for (int j = 0; j < seatingChart.GetLength(1); j++)
+                    {
+                        seatingChart[i, j].Reserved = false;
+                    }
+                }
 
+                RefreshSeating();
+            }
+            else
+            {
+                return;
+            }
         }
     }
 
