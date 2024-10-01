@@ -1,0 +1,1 @@
+C:\New folder\New folder\OneDrive\Documents\GitHub\CSC-317_GroupActivity\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\MauiApp1.csproj.AssemblyReference.cache
