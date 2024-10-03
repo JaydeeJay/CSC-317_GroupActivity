@@ -122,7 +122,7 @@ namespace MauiApp1
             //a comment
         }
 
-        //Assign to Team 2 Member
+        //Guy Dickerson
         private void ButtonCancelReservation(object sender, EventArgs e)
         {
 
