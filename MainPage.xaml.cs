@@ -119,10 +119,12 @@ namespace MauiApp1
         //Mirion Draper
         private void ButtonReserveRange(object sender, EventArgs e)
         {
+            //Ask user for seat range
             var seatRange = await DisplayPromptAsync("Enter Seat Range", "enter seat range (ex: A1:A10.", "Ok");
 
             if (seatRange != null)
-            {
+            
+                //Format range input. Ex: A1:A10
                 var seats = seatRange.Split(':');
                 if (seats.Length != 2)
                 {
@@ -137,18 +139,21 @@ namespace MauiApp1
                 int startColumn = int.Parse(startSeat.Substring(1));
                 int endColumn = int.Parse(endSeat.Substring(1));
 
+                //Make sure that the seats are in the same row
                 if (startRow != endRow)
                 {
                     await DisplayALert("Error", "The start and end seats have to be in the same row.", "Ok");
                     return;
                 }
 
+                //Make sure that the columns are in the right order
                 if (startColumn > endColumn)
                 {
                     await DisplayAlert("Error", "Invalid Range. The start seat must come before the end seat.", "Ok");
                     return;
                 }
 
+                //See if seats are available in range
                 for (int column = startColumn; column <= endColumn; column++)
                 {
                     string seat = $"(startRow){column}";
@@ -176,6 +181,7 @@ namespace MauiApp1
                         return;
                     }
                 }
+                //Reserve seats in range
                 for (int column = startColumn; column <= endColumn; column++)
                 {
                     string seat = $"{startRow}{column}";
