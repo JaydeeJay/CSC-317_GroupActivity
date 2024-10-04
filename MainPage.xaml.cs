@@ -155,10 +155,64 @@ namespace MauiApp1
         }
 
         //Patrick Seals
-        private void ButtonCancelReservationRange(object sender, EventArgs e)
-        {
+        public void CancelReservationRange(string seatRange)
+{
+    // Split the seatRange input
+    var seats = seatRange.Split(':');
+    if (seats.Length != 2)
+    {
+        DisplayAlert("Error", "Invalid seat range format. Use format like A1:A4.", "OK");
+        return;
+    }
 
+    string startSeat = seats[0];
+    string endSeat = seats[1];
+
+    // Extract row letters and seat numbers
+    char startRow = startSeat[0];
+    char endRow = endSeat[0];
+    int startColumn = int.Parse(startSeat.Substring(1));
+    int endColumn = int.Parse(endSeat.Substring(1));
+
+    // Validate that both seats are in the same row
+    if (startRow != endRow)
+    {
+        DisplayAlert("Error", "The start and end seats must be in the same row.", "OK");
+        return;
+    }
+
+    // Validate that the columns are in the correct order
+    if (startColumn > endColumn)
+    {
+        DisplayAlert("Error", "Invalid range. The start seat should come before the end seat.", "OK");
+        return;
+    }
+
+    // Loop through the seats in the specified range
+    for (int column = startColumn; column <= endColumn; column++)
+    {
+        string seat = $"{startRow}{column}";
+
+        // Assume we have a method IsSeatReserved(seat) that checks if a seat is reserved
+        if (!IsSeatReserved(seat))
+        {
+            DisplayAlert("Error", $"Seat {seat} is not reserved or invalid.", "OK");
+            return;
         }
+    }
+
+    // Cancel reservation for all seats in the range
+    for (int column = startColumn; column <= endColumn; column++)
+    {
+        string seat = $"{startRow}{column}";
+
+        // Assume we have a method CancelSeat(seat) that cancels the reservation of the seat
+        CancelSeat(seat);
+    }
+
+    DisplayAlert("Success", "All seats in the range have been cancelled.", "OK");
+}
+
 
         //Josh
         private async void ButtonResetSeatingChart(object sender, EventArgs e)
