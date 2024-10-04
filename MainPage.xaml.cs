@@ -116,10 +116,85 @@ namespace MauiApp1
             }
         }
 
-        //Assign to Team 1 Member
+        //Mirion Draper
         private void ButtonReserveRange(object sender, EventArgs e)
         {
-            //a comment
+            var seatRange = await DisplayPromptAsync("Enter Seat Range", "enter seat range (ex: A1:A10.", "Ok");
+
+            if (seatRange != null)
+            {
+                var seats = seatRange.Split(':');
+                if (seats.Length != 2)
+                {
+                    await DisplayAlert("Error", "Invalid format. Please format your range like A1:A10", "Ok");
+                    return;
+                }
+
+                string startSeat = seats[0];
+                string endSeat = seats[1];
+                char startRow = startSeat[0];
+                char endRow = endSeat[0]
+                int startColumn = int.Parse(startSeat.Substring(1));
+                int endColumn = int.Parse(endSeat.Substring(1));
+
+                if (startRow != endRow)
+                {
+                    await DisplayALert("Error", "The start and end seats have to be in the same row.", "Ok");
+                    return;
+                }
+
+                if (startColumn > endColumn)
+                {
+                    await DisplayAlert("Error", "Invalid Range. The start seat must come before the end seat.", "Ok");
+                    return;
+                }
+
+                for (int column = startColumn; column <= endColumn; column++)
+                {
+                    string seat = $"(startRow){column}";
+
+                    bool seatFound = false;
+                    for (int i = 0; i < seatingChart.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < seaatingChart.GetLength(1); j++)
+                        {
+                            if (seatingChart[i, j].Name == seat)
+                            {
+                                seatFound = true;
+                                if (seatingChart[i, j].Reserved)
+                                {
+                                    await DisplayAlert("Error!", $"Seat {seat} is already reserved!", "Ok");
+                                    return;
+                                }
+                            }
+                        }
+                    }
+
+                    if (!seatFound)
+                    {
+                        await DisplayAlert("Error!", $"Seat {seat} not found!", "Ok");
+                        return;
+                    }
+                }
+                for (int column = startColumn; column <= endColumn; column++)
+                {
+                    string seat = $"{startRow}{column}";
+
+                    for (int i = 0; i < seatingChart.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < seatingChart.GetLength(1); j++)
+                        {
+                            if (seatingChart[i, j].Name == seat)
+                            {
+                                seatingChart[i, j].Reserved = true;
+                            }
+                        }
+                    }
+                }
+                    await DisplayAlert("Congradulations!", "All seats in range have been reserved!", "Ok");
+                    RefreshSeating();
+                
+            }
         }
 
         //Guy Dickerson
